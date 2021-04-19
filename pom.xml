@@ -1,16 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
 
-  <groupId>com.github.rjeschke</groupId>
+
+  <groupId>de.onesty-direct</groupId>
   <artifactId>txtmark</artifactId>
-  <version>0.14-SNAPSHOT</version>
+  <version>0.15</version>
   <name>txtmark</name>
   <description>Markdown parser for the JVM</description>
   <url>https://github.com/rjeschke/txtmark</url>
@@ -79,38 +74,28 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.5.1</version>
+        <executions>
+          <execution>
+            <id>default-deploy</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <serverId>nexus</serverId>
+          <nexusUrl>http://bitbucket.onesty-dev.de:8081/nexus/content/repositories/0-artifacts-releases/</nexusUrl>
+          <skipStaging>true</skipStaging>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
-  
-  <profiles>
-    <profile>
-      <id>release-sign-artifacts</id>
-      <activation>
-        <property>
-          <name>performRelease</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.1</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+
 
   <dependencies>
     <dependency>
@@ -120,5 +105,12 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <distributionManagement>
+    <repository>
+      <id>0-artifacts-releases</id>
+      <name>0-artifacts-releases</name>
+      <url>https://nexus.onesty-dev.de:5083/content/repositories/0-artifacts-releases/</url>
+    </repository>
+  </distributionManagement>
 
 </project>
